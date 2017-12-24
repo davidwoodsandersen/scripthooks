@@ -1,1 +1,5 @@
-document.write('app.js loaded.');
+var eventDirectory = new EventDirectory();
+var userInterface = new UserInterface();
+
+eventDirectory.listen();
+userInterface.listen();
