@@ -6,6 +6,8 @@ function UserInterface() {
 UserInterface.prototype.createEventView = function(data) {
   var self = this;
   var viewContainer = document.createElement('div');
+  var deleteButton;
+
   viewContainer.className = 'handler';
   viewContainer.setAttribute('data-event-id', data.id);
   viewContainer.innerHTML = `
@@ -13,10 +15,20 @@ UserInterface.prototype.createEventView = function(data) {
     <input type="text">
     <label>Enabled:</label>
     <input type="checkbox">
-    <button>Delete</button>
+    <button data-delete="${data.id}">Delete</button>
   `;
 
   self.eventsContainer.appendChild(viewContainer);
+  deleteButton = document.querySelector(`[data-delete="${data.id}"]`);
+  deleteButton.addEventListener('click', function() {
+    messageService.publish('deleteEventRequested', { id: data.id });
+  });
+};
+
+UserInterface.prototype.deleteEventView = function(data) {
+  var viewToDelete = document.querySelector(`[data-event-id="${data.id}"]`);
+
+  viewToDelete.parentNode.removeChild(viewToDelete);
 };
 
 UserInterface.prototype.listen = function() {
@@ -28,5 +40,9 @@ UserInterface.prototype.listen = function() {
 
   messageService.subscribe('eventCreated', function(data) {
     self.createEventView(data);
+  });
+
+  messageService.subscribe('eventDeleted', function(data) {
+    self.deleteEventView(data);
   });
 };

@@ -31,5 +31,12 @@ EventDirectory.prototype.listen = function() {
     messageService.publish('eventCreated', {
       id: event.id
     });
-  })
+  });
+
+  messageService.subscribe('deleteEventRequested', function(data) {
+    self.delete(data.id);
+    messageService.publish('eventDeleted', {
+      id: data.id
+    });
+  });
 };
