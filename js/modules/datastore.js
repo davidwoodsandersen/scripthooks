@@ -29,10 +29,12 @@ DataStore.prototype.load = function() {
 DataStore.prototype.listen = function() {
   var self = this;
 
-  messageService.subscribe('saveDataRequested', function(data) {
-    self.write(data);
-    messageService.publish('dataSaved', {
-      lastSaved: new Date().toTimeString()
-    })
+  messageService.subscribe({
+    'saveDataRequested': function(data) {
+      self.write(data);
+      messageService.publish('dataSaved', {
+        lastSaved: new Date().toTimeString()
+      });
+    }
   });
 };

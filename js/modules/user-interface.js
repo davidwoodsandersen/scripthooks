@@ -40,21 +40,21 @@ UserInterface.prototype.listen = function() {
     messageService.publish('newEventRequested');
   });
 
-  messageService.subscribe('eventCreated', function(data) {
-    self.createEventView(data);
-  });
+  messageService.subscribe({
+    'eventCreated': function(data) {
+      self.createEventView(data);
+    },
+    'eventDeleted': function(data) {
+      self.deleteEventView(data);
+    },
+    'dataLoaded': function(data) {
+      var events = data.events;
 
-  messageService.subscribe('eventDeleted', function(data) {
-    self.deleteEventView(data);
-  });
-
-  messageService.subscribe('dataLoaded', function(data) {
-    var events = data.events;
-
-    if (events && events.length) {
-      events.forEach(function(event) {
-        self.createEventView(event);
-      });
+      if (events && events.length) {
+        events.forEach(function(event) {
+          self.createEventView(event);
+        });
+      }
     }
   });
 };

@@ -1,9 +1,11 @@
 var messageService = (function() {
   var _registry = {};
 
-  function subscribe(message, callback) {
-    if (!_registry[message]) _registry[message] = [];
-    _registry[message].push(callback);
+  function subscribe(subscriptions) {
+    for (var message in subscriptions) {
+      if (!_registry[message]) _registry[message] = [];
+      _registry[message].push(subscriptions[message]);
+    }
   }
 
   function publish(message, data) {
