@@ -21,7 +21,9 @@ UserInterface.prototype.createEventView = function(data) {
   self.eventsContainer.appendChild(viewContainer);
   deleteButton = document.querySelector(`[data-delete="${data.id}"]`);
   deleteButton.addEventListener('click', function() {
-    messageService.publish('deleteEventRequested', { id: data.id });
+    messageService.publish('deleteEventRequested', {
+      id: data.id
+    });
   });
 };
 
@@ -44,5 +46,15 @@ UserInterface.prototype.listen = function() {
 
   messageService.subscribe('eventDeleted', function(data) {
     self.deleteEventView(data);
+  });
+
+  messageService.subscribe('dataLoaded', function(data) {
+    var events = data.events;
+
+    if (events && events.length) {
+      events.forEach(function(event) {
+        self.createEventView(event);
+      });
+    }
   });
 };
