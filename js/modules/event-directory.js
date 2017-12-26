@@ -24,13 +24,13 @@ EventDirectory.prototype.getById = function(eventId) {
 EventDirectory.prototype.listen = function() {
   var self = this;
 
-  messageService.subscribe({
+  ms.subscribe({
     'dataLoaded': function(data) {
       for (var event in data) {
         self.add(event);
-        messageService.publish('eventCreated', data[event]);
+        ms.publish('eventCreated', data[event]);
       }
-      messageService.publish('saveDataRequested', {
+      ms.publish('saveDataRequested', {
         events: self._events
       });
     },
@@ -39,17 +39,17 @@ EventDirectory.prototype.listen = function() {
 
       self.add(event);
 
-      messageService.publish('eventCreated', {
+      ms.publish('eventCreated', {
         id: event.id
       });
 
-      messageService.publish('saveDataRequested', {
+      ms.publish('saveDataRequested', {
         events: self._events
       });
     },
     'deleteEventRequested': function(data) {
       self.delete(data.id);
-      messageService.publish('eventDeleted', {
+      ms.publish('eventDeleted', {
         id: data.id
       });
     }

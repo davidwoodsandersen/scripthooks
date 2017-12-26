@@ -21,7 +21,7 @@ UserInterface.prototype.createEventView = function(data) {
   self.eventsContainer.appendChild(viewContainer);
   deleteButton = document.querySelector(`[data-delete="${data.id}"]`);
   deleteButton.addEventListener('click', function() {
-    messageService.publish('deleteEventRequested', {
+    ms.publish('deleteEventRequested', {
       id: data.id
     });
   });
@@ -37,10 +37,10 @@ UserInterface.prototype.listen = function() {
   var self = this;
 
   self.newEventsButton.addEventListener('click', function() {
-    messageService.publish('newEventRequested');
+    ms.publish('newEventRequested');
   });
 
-  messageService.subscribe({
+  ms.subscribe({
     'eventCreated': function(data) {
       self.createEventView(data);
     },

@@ -23,16 +23,16 @@ DataStore.prototype.write = function(data) {
 DataStore.prototype.load = function() {
   var data = this.read();
 
-  messageService.publish('dataLoaded', data);
+  ms.publish('dataLoaded', data);
 };
 
 DataStore.prototype.listen = function() {
   var self = this;
 
-  messageService.subscribe({
+  ms.subscribe({
     'saveDataRequested': function(data) {
       self.write(data);
-      messageService.publish('dataSaved', {
+      ms.publish('dataSaved', {
         lastSaved: new Date().toTimeString()
       });
     }

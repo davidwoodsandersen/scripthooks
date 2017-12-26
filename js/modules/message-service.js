@@ -1,4 +1,4 @@
-var messageService = (function() {
+var ms = (function() {
   var _registry = {};
 
   function subscribe(subscriptions) {
