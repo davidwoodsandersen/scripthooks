@@ -21,6 +21,10 @@ EventDirectory.prototype.getById = function(eventId) {
   return this._events[eventId];
 };
 
+EventDirectory.prototype.getAllEvents = function() {
+  return this._events;
+};
+
 EventDirectory.prototype.listen = function() {
   var self = this;
 
@@ -31,7 +35,7 @@ EventDirectory.prototype.listen = function() {
         ms.publish('eventCreated', data[event]);
       }
       ms.publish('saveDataRequested', {
-        events: self._events
+        events: self.getAllEvents()
       });
     },
     'newEventRequested': function() {
@@ -44,7 +48,7 @@ EventDirectory.prototype.listen = function() {
       });
 
       ms.publish('saveDataRequested', {
-        events: self._events
+        events: self.getAllEvents()
       });
     },
     'deleteEventRequested': function(data) {
