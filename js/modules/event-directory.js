@@ -30,10 +30,17 @@ EventDirectory.prototype.listen = function() {
 
   ms.subscribe({
     'dataLoaded': function(data) {
-      for (var event in data) {
-        self.add(event);
-        ms.publish('eventCreated', data[event]);
+      var events = data.events;
+
+      for (var event in events) {
+        if (events.hasOwnProperty(event)) {
+          self.add(events[event]);
+          ms.publish('eventCreated', {
+            id: events[event].id
+          });
+        }
       }
+
       ms.publish('saveDataRequested', {
         events: self.getAllEvents()
       });
@@ -53,6 +60,11 @@ EventDirectory.prototype.listen = function() {
     },
     'deleteEventRequested': function(data) {
       self.delete(data.id);
+
+      ms.publish('saveDataRequested', {
+        events: self.getAllEvents()
+      });
+
       ms.publish('eventDeleted', {
         id: data.id
       });
