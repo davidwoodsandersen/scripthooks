@@ -7,14 +7,16 @@ UserInterface.prototype.createEntryView = function(data) {
   var self = this;
   var viewContainer = document.createElement('div');
   var deleteButton;
+  var eventNameField;
+  var enabledCheckbox;
 
   viewContainer.className = 'handler';
   viewContainer.setAttribute('data-entry-id', data.id);
   viewContainer.innerHTML = `
     <label>Event Name:</label>
-    <input type="text">
+    <input type="text" data-event-name="${data.id}">
     <label>Enabled:</label>
-    <input type="checkbox">
+    <input type="checkbox" data-enabled="${data.id}">
     <button data-delete="${data.id}"></button>
     <section class="editor-container">
       <div id="code-${data.id}"></div>
@@ -22,10 +24,29 @@ UserInterface.prototype.createEntryView = function(data) {
   `;
 
   self.entryContainer.appendChild(viewContainer);
+
   deleteButton = document.querySelector(`[data-delete="${data.id}"]`);
   deleteButton.addEventListener('click', function() {
     ms.publish('deleteEntryRequested', {
       id: data.id
+    });
+  });
+
+  eventNameField = document.querySelector(`[data-event-name="${data.id}"]`);
+  eventNameField.value = data.eventName;
+  eventNameField.addEventListener('blur', function() {
+    ms.publish('entryContentUpdated', {
+      id: data.id,
+      eventName: eventNameField.value
+    });
+  });
+
+  enabledCheckbox = document.querySelector(`[data-enabled="${data.id}"]`);
+  enabledCheckbox.checked = data.enabled;
+  enabledCheckbox.addEventListener('change', function() {
+    ms.publish('entryContentUpdated', {
+      id: data.id,
+      enabled: enabledCheckbox.checked
     });
   });
 

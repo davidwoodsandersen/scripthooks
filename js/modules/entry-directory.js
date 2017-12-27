@@ -65,10 +65,11 @@ EntryDirectory.prototype.listen = function() {
         id: data.id
       });
     },
-    'codeValueUpdated': function(data) {
+    'entryContentUpdated': function(data) {
       var updatedEntry = self.getById(data.id);
 
-      updatedEntry.code = data.value;
+      // Re-assign all fields passed with the event:
+      Object.assign(updatedEntry, data);
 
       ms.publish('saveDataRequested', {
         entries: self.getAllEntries()

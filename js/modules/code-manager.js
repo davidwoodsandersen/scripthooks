@@ -23,9 +23,9 @@ TextEditor.prototype.initialize = function() {
       changeEventTimeout = setTimeout(function() {
         changeEventTimeout = null;
 
-        ms.publish('codeValueUpdated', {
+        ms.publish('entryContentUpdated', {
           id: self.id,
-          value: self.getValue()
+          code: self.getValue()
         });
       }, 1000);
     }
