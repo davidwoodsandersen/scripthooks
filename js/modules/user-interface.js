@@ -16,6 +16,9 @@ UserInterface.prototype.createEntryView = function(data) {
     <label>Enabled:</label>
     <input type="checkbox">
     <button data-delete="${data.id}">Delete</button>
+    <section class="editor-container">
+      <div id="code-${data.id}"></div>
+    </section>
   `;
 
   self.entryContainer.appendChild(viewContainer);
@@ -24,6 +27,10 @@ UserInterface.prototype.createEntryView = function(data) {
     ms.publish('deleteEventRequested', {
       id: data.id
     });
+  });
+
+  ms.publish('entryViewCreated', {
+    id: data.id
   });
 };
 
