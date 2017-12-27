@@ -6,4 +6,4 @@ dataStore.listen();
 eventDirectory.listen();
 userInterface.listen();
 
-dataStore.load();
+dataStore.read();

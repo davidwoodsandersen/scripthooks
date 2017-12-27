@@ -3,27 +3,24 @@ function DataStore() {
 }
 
 DataStore.prototype.read = function() {
-  var self = this;
-  var data = {};
+  var storageIdentifier = this.storageIdentifier;
 
-  try {
-    data = JSON.parse(localStorage.getItem(self.storageIdentifier)).events;
-  }
-  catch (e) {}
-
-  return data;
+  chrome.storage.sync.get(storageIdentifier, function(data) {
+    ms.publish('dataLoaded', data);
+  });
 };
 
 DataStore.prototype.write = function(data) {
-  var self = this;
+  var storageIdentifier = this.storageIdentifier;
+  var storageData = {};
 
-  localStorage.setItem(self.storageIdentifier, JSON.stringify(data));
-};
+  storageData[storageIdentifier] = JSON.stringify(data);
 
-DataStore.prototype.load = function() {
-  var data = this.read();
-
-  ms.publish('dataLoaded', data);
+  chrome.storage.sync.set(storageData, function() {
+    ms.publish('dataSaved', {
+      lastSaved: new Date().toTimeString()
+    });
+  });
 };
 
 DataStore.prototype.listen = function() {
@@ -32,9 +29,6 @@ DataStore.prototype.listen = function() {
   ms.subscribe({
     'saveDataRequested': function(data) {
       self.write(data);
-      ms.publish('dataSaved', {
-        lastSaved: new Date().toTimeString()
-      });
     }
   });
 };
