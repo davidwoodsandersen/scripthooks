@@ -15,7 +15,7 @@ UserInterface.prototype.createEntryView = function(data) {
     <input type="text">
     <label>Enabled:</label>
     <input type="checkbox">
-    <button data-delete="${data.id}">Delete</button>
+    <button data-delete="${data.id}"></button>
     <section class="editor-container">
       <div id="code-${data.id}"></div>
     </section>
