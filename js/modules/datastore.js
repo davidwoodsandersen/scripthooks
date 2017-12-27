@@ -6,7 +6,9 @@ DataStore.prototype.read = function() {
   var storageIdentifier = this.storageIdentifier;
 
   chrome.storage.sync.get(storageIdentifier, function(data) {
-    ms.publish('dataLoaded', JSON.parse(data[storageIdentifier]));
+    if (data[storageIdentifier]) {
+      ms.publish('dataLoaded', JSON.parse(data[storageIdentifier]));
+    }
   });
 };
 

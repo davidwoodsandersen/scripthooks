@@ -1,9 +1,9 @@
 var dataStore = new DataStore();
-var eventDirectory = new EventDirectory();
+var entryDirectory = new EntryDirectory();
 var userInterface = new UserInterface();
 
 dataStore.listen();
-eventDirectory.listen();
+entryDirectory.listen();
 userInterface.listen();
 
 dataStore.read();
