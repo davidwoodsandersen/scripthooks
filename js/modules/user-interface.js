@@ -24,14 +24,12 @@ UserInterface.prototype.createEntryView = function(data) {
   self.entryContainer.appendChild(viewContainer);
   deleteButton = document.querySelector(`[data-delete="${data.id}"]`);
   deleteButton.addEventListener('click', function() {
-    ms.publish('deleteEventRequested', {
+    ms.publish('deleteEntryRequested', {
       id: data.id
     });
   });
 
-  ms.publish('entryViewCreated', {
-    id: data.id
-  });
+  ms.publish('entryViewCreated', data);
 };
 
 UserInterface.prototype.deleteEntryView = function(data) {

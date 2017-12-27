@@ -35,9 +35,7 @@ EntryDirectory.prototype.listen = function() {
       for (var entry in entries) {
         if (entries.hasOwnProperty(entry)) {
           self.add(entries[entry]);
-          ms.publish('entryCreated', {
-            id: entries[entry].id
-          });
+          ms.publish('entryCreated', entries[entry]);
         }
       }
 
@@ -50,15 +48,13 @@ EntryDirectory.prototype.listen = function() {
 
       self.add(entry);
 
-      ms.publish('entryCreated', {
-        id: entry.id
-      });
+      ms.publish('entryCreated', entry);
 
       ms.publish('saveDataRequested', {
         entries: self.getAllEntries()
       });
     },
-    'deleteEventRequested': function(data) {
+    'deleteEntryRequested': function(data) {
       self.delete(data.id);
 
       ms.publish('saveDataRequested', {
@@ -67,6 +63,15 @@ EntryDirectory.prototype.listen = function() {
 
       ms.publish('entryDeleted', {
         id: data.id
+      });
+    },
+    'codeValueUpdated': function(data) {
+      var updatedEntry = self.getById(data.id);
+
+      updatedEntry.code = data.value;
+
+      ms.publish('saveDataRequested', {
+        entries: self.getAllEntries()
       });
     }
   });
