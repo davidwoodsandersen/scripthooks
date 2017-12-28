@@ -16,6 +16,7 @@ TextEditor.prototype.initialize = function() {
   self.editor = ace.edit(`code-${this.id}`);
   self.editor.setTheme("ace/theme/monokai");
   self.editor.getSession().setMode("ace/mode/javascript");
+  self.editor.getSession().setUseWrapMode(true);
   self.editor.on('change', function(e) {
     // Throttle the event listener
     // using changeEventTimeout
